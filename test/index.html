@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update Profile & Verify OTP Test</title>
+</head>
+<body>
+  <h2>Update Profile API Test</h2>
+
+  <label>Update Type:</label><br>
+  <select id="type">
+    <option value="update-mentee">Update Mentee Info</option>
+    <option value="profile-photo-update">Profile Photo Update</option>
+    <option value="email-update">Email Update</option>
+    <option value="phone-update">Phone Update</option>
+  </select><br><br>
+
+  <div id="form-fields"></div>
+  <button onclick="sendRequest()">Submit</button>
+
+  <hr>
+
+  <h2>Verify Email OTP</h2>
+  Email: <input type="email" id="verifyEmail"><br>
+  OTP: <input type="text" id="verifyEmailOtp"><br>
+  <button onclick="verifyEmail()">Verify Email OTP</button>
+
+  <hr>
+
+
+
+  <h3>Response:</h3>
+  <pre id="response"></pre>
+
+  <script>
+    const formFieldsDiv = document.getElementById('form-fields');
+    const typeSelect = document.getElementById('type');
+
+    function renderFields() {
+      const type = typeSelect.value;
+      let html = '';
+
+      if (type === "update-mentee") {
+        html += `Name: <input type="text" id="name"><br>`;
+        html += `Age: <input type="number" id="age"><br>`;
+        html += `Gender: <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select><br>`;
+        html += `Working: <select id="working">
+                    <option value="student">Student</option>
+                    <option value="professional">Professional</option>
+                    <option value="employee">Employee</option>
+                  </select><br>`;
+      }
+      else if (type === "profile-photo-update") {
+        html += `Profile Photo: <input type="file" id="profilePhoto"><br>`;
+      }
+      else if (type === "email-update") {
+        html += `New Email: <input type="email" id="email"><br>`;
+      }
+      else if (type === "phone-update") {
+        html += `New Phone: <input type="text" id="phone"><br>`;
+      }
+
+      formFieldsDiv.innerHTML = html;
+    }
+
+    typeSelect.addEventListener('change', renderFields);
+    renderFields();
+
+    async function sendRequest() {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Yzk2ZjdjZGIyZTJmMWE5Yzc2NTQwMCIsImlhdCI6MTc1NDY2MjMxOCwiZXhwIjoxNzU1MjY3MTE4fQ.23hypdRAagFCksvfJhT1-Pi8AIwqFXtlTgac901KSwc";
+      const type = document.getElementById('type').value;
+      let formData;
+      let headers = { "Authorization": "Bearer " + token };
+
+      if (type === "profile-photo-update") {
+        formData = new FormData();
+        formData.append("type", type);
+        const fileInput = document.getElementById('profilePhoto');
+        if (fileInput.files.length > 0) {
+          formData.append("profilePhoto", fileInput.files[0]);
+        }
+      }
+      else {
+        const data = { type };
+        if (type === "update-mentee") {
+          data.name = document.getElementById('name').value;
+          data.age = document.getElementById('age').value;
+          data.gender = document.getElementById('gender').value;
+          data.working = document.getElementById('working').value;
+        }
+        else if (type === "email-update") {
+          data.email = document.getElementById('email').value;
+        }
+        else if (type === "phone-update") {
+          data.phone = document.getElementById('phone').value;
+        }
+        headers["Content-Type"] = "application/json";
+        formData = JSON.stringify(data);
+      }
+
+      const res = await fetch("http://localhost:5000/api/update-profile", {
+        method: "POST",
+        headers,
+        body: type === "profile-photo-update" ? formData : formData
+      });
+
+      const json = await res.json();
+      document.getElementById('response').innerText = JSON.stringify(json, null, 2);
+    }
+
+    async function verifyEmail() {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Yzk2ZjdjZGIyZTJmMWE5Yzc2NTQwMCIsImlhdCI6MTc1NTQ0NTcwOCwiZXhwIjoxNzU2MDUwNTA4fQ.c9rDa7quIyUcihtqUW8oOmGm52v9nSEfqYSdNrNfZfk";
+      const data = {
+        email: document.getElementById('verifyEmail').value,
+        otp: document.getElementById('verifyEmailOtp').value
+      };
+
+      const res = await fetch("http://localhost:5000/api/verify-email-otp", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+      document.getElementById('response').innerText = JSON.stringify(json, null, 2);
+    }
+
+   
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+# ---------------------------------------
+# Node / Express Backend
+# ---------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+log.txt
+
+# Cache
+.cache/
+.tmp/
+temp/
+*.pid
+*.seed
+
+# Build output
+dist/
+build/
+out/
+
+# ---------------------------------------
+# Docker
+# ---------------------------------------
+docker-compose.override.yml
+Dockerfile.dev
+*.tar
+docker-data/
+mongo-data/
+
+# ---------------------------------------
+# Git / OS System Files
+# ---------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ---------------------------------------
+# Next.js (if using frontend)
+# ---------------------------------------
+.next/
+.next/
+.next/cache/
+.next/static/
+
+# Build artifacts
+*.gz
+*.zip
+
+# ---------------------------------------
+# Vite (if using frontend)
+# ---------------------------------------
+vite.config.js.timestamp*
+vite.config.ts.timestamp*
+.vite/
+
+# ---------------------------------------
+# TypeScript
+# ---------------------------------------
+*.tsbuildinfo
+
+# ---------------------------------------
+# VSCode
+# ---------------------------------------
+.vscode/

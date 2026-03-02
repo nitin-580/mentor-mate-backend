@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: .
+    container_name: mentor-backend
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mentorDB
+      - PORT=4000
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm start
+
+  mongo:
+    image: mongo:6
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
