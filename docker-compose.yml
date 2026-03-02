@@ -8,8 +8,8 @@ services:
     container_name: mentor-backend
     ports:
       - "4000:4000"
-    environment:
-      - MONGO_URI=mongodb://mongo-db:27017/mentormate
+    env_file:
+      - .env
     depends_on:
       - mongo-db
 
