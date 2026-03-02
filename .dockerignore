@@ -1,0 +1,43 @@
+# Node dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Build output
+dist
+build
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git
+.gitignore
+
+# Docker files (prevent nesting)
+Dockerfile
+docker-compose.yml
+
+# Testing
+coverage
+.tmp
+.cache
+
+# Uploaded files
+uploads
+public/uploads
+static
+storage
